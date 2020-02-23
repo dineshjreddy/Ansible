@@ -1,0 +1,17 @@
+---
+- name: play to test the server reboot
+  hosts: server1
+  become: yes
+  tasks:
+   - name: Reboot the server
+     shell: sleep2 && shutdown -r now 
+     async: 1
+     poll: 0
+   - name: wait for server start
+      wait_for:
+      hosts: server1
+      delay: 30
+      state: started
+      port: 22
+      delegate_to: localhost
+      
